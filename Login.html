@@ -1,0 +1,766 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<meta name="description" content="zharParking - Sistem informasi dan manajemen parkir modern.">
+<meta name="keywords" content="zharParking, aplikasi parkir, sistem parkir, ZharWeb">
+<meta name="author" content="ZharWeb">
+<meta property="og:title" content="zharParking - Login">
+<meta property="og:description" content="Sistem Manajemen Parkir Modern">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://i.imgur.com/sHvsVXi.jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Preview aplikasi zharParking">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="zharParking - Sistem Manajemen Parkir">
+<meta name="twitter:description" content="Aplikasi manajemen parkir modern dari ZharWeb.">
+<meta name="twitter:image" content="https://i.imgur.com/sHvsVXi.jpeg">
+<title>Login - zharParking</title>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='69' font-size='62' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EP%3C/text%3E%3C/svg%3E">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --bg: #f3f7ff;
+    --text: #172554;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+/* Background */
+
+.background {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+    opacity: .5;
+    animation: float 8s ease-in-out infinite;
+}
+
+.circle.one {
+    width: 350px;
+    height: 350px;
+    background: #bfdbfe;
+    top: -120px;
+    left: -100px;
+}
+
+.circle.two {
+    width: 280px;
+    height: 280px;
+    background: #dbeafe;
+    bottom: -100px;
+    right: -60px;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-25px); }
+}
+
+/* Main container */
+
+.login-container {
+    width: 100%;
+    max-width: 950px;
+    min-height: 560px;
+    background: var(--white);
+    border-radius: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(37,99,235,.12);
+    animation: appear .7s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Left panel */
+
+.brand-panel {
+    background: linear-gradient(145deg, #1d4ed8, #3b82f6);
+    padding: 50px 40px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.brand-panel::before,
+.brand-panel::after {
+    content: "";
+    position: absolute;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 50%;
+}
+
+.brand-panel::before {
+    width: 300px;
+    height: 300px;
+    right: -130px;
+    top: 80px;
+}
+
+.brand-panel::after {
+    width: 220px;
+    height: 220px;
+    right: -90px;
+    top: 120px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.logo-icon {
+    width: 45px;
+    height: 45px;
+    background: white;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    font-size: 23px;
+}
+
+.logo h2 {
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -.8px;
+}
+
+.logo h2 span {
+    font-weight: 400;
+    opacity: .8;
+}
+
+.brand-content {
+    position: relative;
+    z-index: 1;
+}
+
+.brand-content .tag {
+    display: inline-block;
+    padding: 8px 13px;
+    background: rgba(255,255,255,.15);
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 22px;
+}
+
+.brand-content h1 {
+    font-size: 34px;
+    line-height: 1.3;
+    margin-bottom: 17px;
+}
+
+.brand-content p {
+    font-size: 13px;
+    line-height: 1.9;
+    color: rgba(255,255,255,.85);
+    max-width: 330px;
+}
+
+.parking-illustration {
+    margin-top: 35px;
+    height: 115px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.parking-illustration i {
+    font-size: 70px;
+    opacity: .9;
+}
+
+.parking-sign {
+    width: 90px;
+    height: 90px;
+    border: 3px solid white;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 800;
+}
+
+.brand-footer {
+    font-size: 11px;
+    color: rgba(255,255,255,.75);
+    position: relative;
+    z-index: 1;
+}
+
+/* Right panel */
+
+.form-panel {
+    padding: 55px 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-header {
+    margin-bottom: 32px;
+}
+
+.form-header .welcome {
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.form-header h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+}
+
+.form-header p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 9px;
+}
+
+.input-wrapper {
+    height: 53px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    transition: .25s;
+    background: #fff;
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(37,99,235,.09);
+}
+
+.input-wrapper > i {
+    color: #94a3b8;
+    font-size: 15px;
+    width: 22px;
+}
+
+.input-wrapper input {
+    border: none;
+    outline: none;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    background: transparent;
+}
+
+.input-wrapper input::placeholder {
+    color: #a0aec0;
+}
+
+.toggle-password {
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.toggle-password:hover {
+    color: var(--primary);
+}
+
+.login-button {
+    width: 100%;
+    height: 53px;
+    border: none;
+    border-radius: 11px;
+    background: var(--primary);
+    color: white;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: .25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.login-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37,99,235,.25);
+}
+
+.login-button:disabled {
+    opacity: .7;
+    cursor: wait;
+    transform: none;
+}
+
+.message {
+    display: none;
+    padding: 12px;
+    border-radius: 9px;
+    font-size: 11px;
+    margin-bottom: 17px;
+    line-height: 1.6;
+}
+
+.message.error {
+    display: block;
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    animation: shake .3s ease;
+}
+
+.message.success {
+    display: block;
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+}
+
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+.security-info {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 13px;
+    background: #f8fafc;
+    border-radius: 10px;
+    margin-top: 23px;
+}
+
+.security-info i {
+    color: #16a34a;
+    font-size: 17px;
+}
+
+.security-info p {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.form-bottom {
+    text-align: center;
+    margin-top: 35px;
+    color: #94a3b8;
+    font-size: 10px;
+}
+
+.form-bottom strong {
+    color: var(--primary);
+}
+
+/* Mobile */
+
+@media(max-width: 700px) {
+    body {
+        padding: 16px;
+    }
+
+    .login-container {
+        max-width: 430px;
+        grid-template-columns: 1fr;
+        min-height: auto;
+        border-radius: 20px;
+    }
+
+    .brand-panel {
+        padding: 25px;
+        min-height: 190px;
+    }
+
+    .logo-icon {
+        width: 39px;
+        height: 39px;
+        font-size: 20px;
+    }
+
+    .logo h2 {
+        font-size: 20px;
+    }
+
+    .brand-content {
+        margin-top: 25px;
+    }
+
+    .brand-content .tag {
+        margin-bottom: 10px;
+        font-size: 9px;
+    }
+
+    .brand-content h1 {
+        font-size: 23px;
+        margin-bottom: 7px;
+    }
+
+    .brand-content p {
+        font-size: 11px;
+    }
+
+    .parking-illustration {
+        display: none;
+    }
+
+    .brand-footer {
+        display: none;
+    }
+
+    .form-panel {
+        padding: 35px 25px;
+    }
+
+    .form-header h2 {
+        font-size: 25px;
+    }
+
+    .form-bottom {
+        margin-top: 25px;
+    }
+}
+
+@media(prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+    <div class="circle one"></div>
+    <div class="circle two"></div>
+</div>
+
+<main class="login-container">
+
+    <!-- BRAND PANEL -->
+    <section class="brand-panel">
+
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-square-parking"></i>
+            </div>
+            <h2>zhar<span>Parking</span></h2>
+        </div>
+
+        <div class="brand-content">
+            <span class="tag">
+                <i class="fa-solid fa-shield-halved"></i>
+                PARKING MANAGEMENT SYSTEM
+            </span>
+
+            <h1>Kelola Parkir<br>Lebih Mudah.</h1>
+
+            <p>
+                Sistem manajemen parkir modern untuk membantu
+                mengelola kendaraan, transaksi, tarif, dan area
+                parkir dengan lebih praktis.
+            </p>
+
+            <div class="parking-illustration">
+                <div class="parking-sign">P</div>
+                <i class="fa-solid fa-car-side"></i>
+            </div>
+        </div>
+
+        <div class="brand-footer">
+            &copy; 2027 zharParking. All rights reserved.
+        </div>
+
+    </section>
+
+    <!-- LOGIN PANEL -->
+    <section class="form-panel">
+
+        <div class="form-header">
+            <div class="welcome">WELCOME BACK</div>
+            <h2>Selamat Datang!</h2>
+            <p>
+                Silakan login menggunakan akun Anda
+                untuk mengakses sistem zharParking.
+            </p>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <form id="loginForm" autocomplete="off">
+
+            <div class="form-group">
+                <label for="username">Username</label>
+
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-user"></i>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Masukkan username"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Masukkan password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        id="togglePassword"
+                        aria-label="Tampilkan password"
+                    >
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="login-button" id="loginButton">
+                <span>Login Sekarang</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+        </form>
+
+        <div class="security-info">
+            <i class="fa-solid fa-circle-check"></i>
+            <p>
+                Akses sistem hanya diperuntukkan bagi pengguna
+                yang memiliki akun terdaftar.
+            </p>
+        </div>
+
+        <div class="form-bottom">
+            Developed by <strong>ZharWeb</strong><br><br>
+            zharParking v1.0.0
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+
+// ===================================
+// KONFIGURASI LOGIN
+// ===================================
+
+const USERNAME = "RPL-TP";
+const PASSWORD = "2027";
+
+// ===================================
+// ELEMENT
+// ===================================
+
+const loginForm = document.getElementById("loginForm");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const loginButton = document.getElementById("loginButton");
+const message = document.getElementById("message");
+const togglePassword = document.getElementById("togglePassword");
+
+// ===================================
+// SHOW / HIDE PASSWORD
+// ===================================
+
+togglePassword.addEventListener("click", function() {
+
+    const isPassword = passwordInput.type === "password";
+
+    passwordInput.type = isPassword ? "text" : "password";
+
+    this.innerHTML = isPassword
+        ? '<i class="fa-solid fa-eye-slash"></i>'
+        : '<i class="fa-solid fa-eye"></i>';
+
+});
+
+// ===================================
+// NOTIFICATION
+// ===================================
+
+function showMessage(type, text) {
+
+    message.className = "message " + type;
+
+    message.innerHTML = text;
+
+}
+
+// ===================================
+// LOGIN PROCESS
+// ===================================
+
+loginForm.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
+
+    // Validasi input kosong
+
+    if (!username || !password) {
+
+        showMessage(
+            "error",
+            '<i class="fa-solid fa-circle-exclamation"></i> Username dan password wajib diisi.'
+        );
+
+        return;
+
+    }
+
+    // Validasi akun
+
+    if (username !== USERNAME || password !== PASSWORD) {
+
+        showMessage(
+            "error",
+            '<i class="fa-solid fa-circle-xmark"></i> Username atau password yang Anda masukkan salah!'
+        );
+
+        passwordInput.value = "";
+        passwordInput.focus();
+
+        return;
+
+    }
+
+    // Login berhasil
+
+    loginButton.disabled = true;
+
+    loginButton.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Memproses login...';
+
+    showMessage(
+        "success",
+        '<i class="fa-solid fa-circle-check"></i> Login berhasil! Mengalihkan ke halaman utama...'
+    );
+
+    // Simpan status sesi sementara
+
+    sessionStorage.setItem("zharParking_loggedIn", "true");
+
+    // Arahkan ke halaman utama
+
+    setTimeout(function() {
+
+        window.location.href = "Home.html";
+
+    }, 1000);
+
+});
+
+</script>
+
+</body>
+</html>

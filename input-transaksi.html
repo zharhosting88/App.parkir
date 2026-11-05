@@ -1,0 +1,454 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<meta name="description" content="Input transaksi parkir kendaraan zharParking.">
+<title>Input Transaksi - zharParking</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='white' font-family='Arial'%3EP%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f4f7fc;color:#1e293b}
+.sidebar{position:fixed;left:-260px;top:0;width:250px;height:100vh;background:#fff;padding:25px 18px;box-shadow:3px 0 20px #00000010;z-index:10;transition:.3s}
+.sidebar.active{left:0}
+.logo{font-size:22px;font-weight:800;color:#2563eb;margin-bottom:35px}
+.logo span{color:#1e293b}
+.nav a{display:flex;align-items:center;gap:13px;padding:14px;margin-bottom:8px;border-radius:10px;text-decoration:none;color:#64748b;font-size:14px}
+.nav a:hover,.nav a.active{background:#eaf1ff;color:#2563eb}
+.nav i{width:20px;text-align:center}
+.overlay{display:none;position:fixed;inset:0;background:#0006;z-index:9}
+.overlay.active{display:block}
+.main{min-height:100vh;padding:25px}
+.topbar{display:flex;align-items:center;gap:15px;margin-bottom:30px}
+.menu{border:0;background:#fff;width:42px;height:42px;border-radius:10px;color:#2563eb;font-size:18px;box-shadow:0 2px 10px #0000000c;cursor:pointer}
+.topbar h2{font-size:20px}
+.content{max-width:750px;margin:auto}
+.breadcrumb{font-size:13px;color:#94a3b8;margin-bottom:20px}
+.breadcrumb a{color:#2563eb;text-decoration:none}
+.card{background:#fff;border-radius:17px;padding:28px;box-shadow:0 5px 25px #00000008;animation:up .4s ease}
+.card-head{margin-bottom:25px}
+.card-head .icon{width:48px;height:48px;background:#eaf1ff;color:#2563eb;border-radius:13px;display:grid;place-items:center;font-size:21px;margin-bottom:15px}
+.card-head h3{font-size:21px;margin-bottom:7px}
+.card-head p{font-size:13px;color:#94a3b8;line-height:1.6}
+.form-group{margin-bottom:20px}
+label{display:block;font-size:13px;font-weight:700;margin-bottom:9px}
+input,select{width:100%;padding:14px;border:1px solid #e2e8f0;border-radius:10px;outline:none;font-size:14px;background:#fff;color:#334155}
+input:focus,select:focus{border-color:#2563eb;box-shadow:0 0 0 3px #2563eb15}
+input[readonly]{background:#f8fafc;color:#64748b}
+.hint{font-size:11px;color:#94a3b8;margin-top:7px}
+.result-box{background:#eff6ff;border:1px solid #dbeafe;padding:17px;border-radius:12px;margin:20px 0}
+.result-row{display:flex;justify-content:space-between;gap:15px;padding:7px 0;font-size:13px;color:#475569}
+.result-row strong{color:#1d4ed8;text-align:right}
+.result-total{border-top:1px solid #bfdbfe;margin-top:8px;padding-top:15px;font-size:15px;font-weight:700}
+.result-total strong{font-size:20px;color:#2563eb}
+.actions{display:flex;gap:10px;margin-top:25px}
+.btn{border:0;border-radius:10px;padding:14px 20px;font-weight:700;cursor:pointer;font-size:13px;transition:.2s}
+.btn-primary{background:#2563eb;color:#fff;flex:1}
+.btn-primary:hover{background:#1d4ed8}
+.btn-reset{background:#f1f5f9;color:#64748b}
+.btn:hover{transform:translateY(-1px)}
+.toast{position:fixed;right:20px;top:20px;background:#fff;padding:15px 20px;border-radius:12px;box-shadow:0 5px 25px #0002;z-index:30;display:none;font-size:13px}
+.toast.show{display:block;animation:up .3s}
+.toast i{color:#16a34a;margin-right:8px}
+.footer{text-align:center;color:#94a3b8;font-size:11px;margin-top:25px}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:900px){.sidebar{left:0}.main{margin-left:250px}}
+@media(max-width:500px){.main{padding:18px}.card{padding:21px}.actions{flex-direction:column}.btn{width:100%}}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar" id="sidebar">
+    <div class="logo"><i class="fa-solid fa-square-parking"></i> zhar<span>Parking</span></div>
+    <nav class="nav">
+        <a href="Home.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="Input_data.html"><i class="fa-solid fa-database"></i> Input Data</a>
+        <a href="input-kendaraan.html"><i class="fa-solid fa-car"></i> Input Kendaraan</a>
+        <a href="input-tarif.html"><i class="fa-solid fa-money-bill-wave"></i> Input Tarif</a>
+        <a href="input-transaksi.html" class="active"><i class="fa-solid fa-receipt"></i> Input Transaksi</a>
+        <a href="input-area-parkir.html"><i class="fa-solid fa-square-parking"></i> Area Parkir</a>
+        <a href="lihat-data.html"><i class="fa-solid fa-table-list"></i> Lihat Data</a>
+        <a href="#" onclick="contactDeveloper(event)"><i class="fa-solid fa-headset"></i> Kontak Developer</a>
+        <a href="#" onclick="logout(event)"><i class="fa-solid fa-right-from-bracket"></i> Keluar</a>
+    </nav>
+</aside>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<main class="main">
+    <header class="topbar">
+        <button class="menu" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+        <h2>Input Transaksi</h2>
+    </header>
+
+    <section class="content">
+        <div class="breadcrumb">
+            <a href="home.html">Dashboard</a> /
+            <a href="input_data.html">Input Data</a> / Transaksi
+        </div>
+
+        <div class="card">
+            <div class="card-head">
+                <div class="icon"><i class="fa-solid fa-receipt"></i></div>
+                <h3>Tambah Transaksi Parkir</h3>
+                <p>Masukkan informasi kendaraan masuk dan keluar untuk menghitung biaya parkir.</p>
+            </div>
+
+            <form id="transaksiForm">
+
+                <div class="form-group">
+                    <label>ID Parkir</label>
+                    <input type="text" id="idParkir" readonly>
+                    <div class="hint">ID transaksi dibuat otomatis.</div>
+                </div>
+
+                <div class="form-group">
+                    <label>ID Kendaraan</label>
+                    <select id="idKendaraan" required>
+                        <option value="">-- Pilih Kendaraan --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Jam Masuk</label>
+                    <input type="datetime-local" id="jamMasuk" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Jam Keluar</label>
+                    <input type="datetime-local" id="jamKeluar" required>
+                </div>
+
+                <div class="form-group">
+                    <label>ID Tarif</label>
+                    <select id="idTarif" required>
+                        <option value="">-- Pilih Tarif --</option>
+                    </select>
+                    <div class="hint" id="tarifHint">Pilih kendaraan terlebih dahulu.</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Durasi Parkir</label>
+                    <input type="text" id="durasi" value="0 jam" readonly>
+                    <div class="hint">Durasi otomatis dibulatkan ke atas.</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Total Biaya</label>
+                    <input type="text" id="totalBiaya" value="Rp0" readonly>
+                </div>
+
+                <div class="result-box">
+                    <div class="result-row">
+                        <span>Jenis Kendaraan</span>
+                        <strong id="infoJenis">-</strong>
+                    </div>
+                    <div class="result-row">
+                        <span>Tarif per Jam</span>
+                        <strong id="infoTarif">Rp0</strong>
+                    </div>
+                    <div class="result-row">
+                        <span>Durasi</span>
+                        <strong id="infoDurasi">0 jam</strong>
+                    </div>
+                    <div class="result-row result-total">
+                        <span>Total Pembayaran</span>
+                        <strong id="infoTotal">Rp0</strong>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Transaksi
+                    </button>
+                    <button type="reset" class="btn btn-reset">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="footer">© 2026 zharParking · Sistem Manajemen Parkir</div>
+    </section>
+</main>
+
+<div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastMessage"></span>
+</div>
+
+<script>
+if(sessionStorage.getItem("zharParking_loggedIn") !== "true"){
+    window.location.replace("Login.html");
+}
+
+const STORAGE_KEY = "zharParkingData";
+
+const $ = id => document.getElementById(id);
+
+function getData(){
+    try{
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return Array.isArray(data) ? data : [];
+    }catch(error){
+        return [];
+    }
+}
+
+function saveData(data){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function rupiah(value){
+    return "Rp" + Number(value || 0).toLocaleString("id-ID");
+}
+
+function generateID(){
+    const data = getData();
+
+    const numbers = data
+        .filter(item => item.kategori === "transaksi")
+        .map(item => parseInt(String(item.id).replace("PRK-",""),10))
+        .filter(number => Number.isFinite(number));
+
+    return "PRK-" + String(Math.max(0,...numbers) + 1).padStart(4,"0");
+}
+
+function setID(){
+    $("idParkir").value = generateID();
+}
+
+function showToast(message){
+    $("toastMessage").textContent = message;
+    $("toast").classList.add("show");
+
+    setTimeout(() => {
+        $("toast").classList.remove("show");
+    },2500);
+}
+
+function loadKendaraan(){
+    const data = getData();
+    const kendaraan = data.filter(item => item.kategori === "kendaraan");
+
+    $("idKendaraan").innerHTML =
+        '<option value="">-- Pilih Kendaraan --</option>';
+
+    kendaraan.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.id;
+        option.textContent = item.id + " - " + item.plat + " (" + item.jenis + ")";
+        $("idKendaraan").appendChild(option);
+    });
+}
+
+function loadTarif(jenis){
+    const data = getData();
+
+    const tarif = data.filter(item =>
+        item.kategori === "tarif" && item.jenis === jenis
+    );
+
+    $("idTarif").innerHTML =
+        '<option value="">-- Pilih Tarif --</option>';
+
+    tarif.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.id;
+        option.textContent = item.id + " - " + rupiah(item.tarifPerJam) + "/jam";
+        $("idTarif").appendChild(option);
+    });
+
+    if(tarif.length === 0){
+        $("tarifHint").textContent = "Tarif untuk jenis kendaraan ini belum tersedia.";
+    }else{
+        $("tarifHint").textContent = "Tarif otomatis disesuaikan dengan jenis kendaraan.";
+    }
+
+    hitungBiaya();
+}
+
+function getSelectedTarif(){
+    const data = getData();
+    return data.find(item =>
+        item.kategori === "tarif" &&
+        item.id === $("idTarif").value
+    );
+}
+
+function hitungBiaya(){
+    const masuk = $("jamMasuk").value;
+    const keluar = $("jamKeluar").value;
+    const tarif = getSelectedTarif();
+
+    let durasi = 0;
+    let total = 0;
+
+    if(masuk && keluar){
+        const selisih = new Date(keluar).getTime() - new Date(masuk).getTime();
+
+        if(selisih > 0){
+            durasi = Math.ceil(selisih / 3600000);
+        }
+    }
+
+    if(tarif && durasi > 0){
+        total = durasi * Number(tarif.tarifPerJam);
+    }
+
+    $("durasi").value = durasi + " jam";
+    $("totalBiaya").value = rupiah(total);
+
+    $("infoJenis").textContent = $("idKendaraan").selectedOptions[0]?.textContent || "-";
+    $("infoTarif").textContent = tarif ? rupiah(tarif.tarifPerJam) : "Rp0";
+    $("infoDurasi").textContent = durasi + " jam";
+    $("infoTotal").textContent = rupiah(total);
+
+    return {durasi,total};
+}
+
+$("idKendaraan").addEventListener("change",function(){
+    const kendaraan = getData().find(item =>
+        item.kategori === "kendaraan" && item.id === this.value
+    );
+
+    if(kendaraan){
+        loadTarif(kendaraan.jenis);
+    }else{
+        $("idTarif").innerHTML = '<option value="">-- Pilih Tarif --</option>';
+        $("tarifHint").textContent = "Pilih kendaraan terlebih dahulu.";
+        hitungBiaya();
+    }
+});
+
+$("idTarif").addEventListener("change",hitungBiaya);
+$("jamMasuk").addEventListener("change",hitungBiaya);
+$("jamKeluar").addEventListener("change",hitungBiaya);
+
+$("transaksiForm").addEventListener("submit",function(e){
+    e.preventDefault();
+
+    const data = getData();
+
+    const kendaraan = data.find(item =>
+        item.kategori === "kendaraan" &&
+        item.id === $("idKendaraan").value
+    );
+
+    const tarif = getSelectedTarif();
+
+    const masuk = $("jamMasuk").value;
+    const keluar = $("jamKeluar").value;
+
+    if(!kendaraan){
+        showToast("Pilih kendaraan yang valid terlebih dahulu.");
+        return;
+    }
+
+    if(!tarif || tarif.jenis !== kendaraan.jenis){
+        showToast("Tarif kendaraan belum tersedia atau tidak sesuai.");
+        return;
+    }
+
+    if(!masuk || !keluar){
+        showToast("Lengkapi jam masuk dan jam keluar.");
+        return;
+    }
+
+    const waktuMasuk = new Date(masuk).getTime();
+    const waktuKeluar = new Date(keluar).getTime();
+
+    if(!Number.isFinite(waktuMasuk) || !Number.isFinite(waktuKeluar) || waktuKeluar <= waktuMasuk){
+        showToast("Jam keluar harus lebih besar dari jam masuk.");
+        return;
+    }
+
+    const hasil = hitungBiaya();
+
+    if(hasil.durasi < 1 || hasil.total <= 0){
+        showToast("Periksa kembali tarif dan durasi parkir.");
+        return;
+    }
+
+    const transaksi = {
+        id: generateID(),
+        kategori: "transaksi",
+        idKendaraan: kendaraan.id,
+        plat: kendaraan.plat,
+        jenis: kendaraan.jenis,
+        jamMasuk: masuk,
+        jamKeluar: keluar,
+        idTarif: tarif.id,
+        tarifPerJam: Number(tarif.tarifPerJam),
+        durasi: hasil.durasi,
+        totalBiaya: hasil.total,
+        createdAt: new Date().toISOString()
+    };
+
+    data.push(transaksi);
+    saveData(data);
+
+    showToast("Transaksi berhasil disimpan!");
+
+    this.reset();
+    resetPreview();
+    setID();
+});
+
+function resetPreview(){
+    $("durasi").value = "0 jam";
+    $("totalBiaya").value = "Rp0";
+    $("infoJenis").textContent = "-";
+    $("infoTarif").textContent = "Rp0";
+    $("infoDurasi").textContent = "0 jam";
+    $("infoTotal").textContent = "Rp0";
+    $("idTarif").innerHTML = '<option value="">-- Pilih Tarif --</option>';
+    $("tarifHint").textContent = "Pilih kendaraan terlebih dahulu.";
+}
+
+$("transaksiForm").addEventListener("reset",function(){
+    setTimeout(() => {
+        resetPreview();
+        setID();
+    },0);
+});
+
+function toggleMenu(){
+    $("sidebar").classList.toggle("active");
+    $("overlay").classList.toggle("active");
+}
+
+function contactDeveloper(e){
+    e.preventDefault();
+
+    const nomor = "6285811570814";
+
+    if(!nomor){
+        showToast("Nomor WhatsApp developer belum diatur.");
+        return;
+    }
+
+    window.open("https://wa.me/" + nomor,"_blank");
+}
+
+function logout(e){
+    e.preventDefault();
+
+    if(confirm("Yakin ingin keluar dari zharParking?")){
+        sessionStorage.removeItem("zharParking_loggedIn");
+        window.location.href = "Login.html";
+    }
+}
+
+loadKendaraan();
+setID();
+</script>
+
+</body>
+</html>

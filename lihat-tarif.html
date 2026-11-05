@@ -1,0 +1,490 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<meta name="description" content="Lihat dan kelola data tarif parkir zharParking.">
+<title>Data Tarif - zharParking</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='white' font-family='Arial'%3EP%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f4f7fc;color:#1e293b}
+.sidebar{position:fixed;left:-260px;top:0;width:250px;height:100vh;background:#fff;padding:25px 18px;box-shadow:3px 0 20px #00000010;z-index:10;transition:.3s}
+.sidebar.active{left:0}
+.logo{font-size:22px;font-weight:800;color:#2563eb;margin-bottom:35px}
+.logo span{color:#1e293b}
+.nav a{display:flex;align-items:center;gap:13px;padding:14px;margin-bottom:8px;border-radius:10px;text-decoration:none;color:#64748b;font-size:14px}
+.nav a:hover,.nav a.active{background:#eaf1ff;color:#2563eb}
+.nav i{width:20px;text-align:center}
+.overlay{display:none;position:fixed;inset:0;background:#0006;z-index:9}
+.overlay.active{display:block}
+.main{min-height:100vh;padding:25px}
+.topbar{display:flex;align-items:center;gap:15px;margin-bottom:30px}
+.menu{border:0;background:#fff;width:42px;height:42px;border-radius:10px;color:#2563eb;font-size:18px;box-shadow:0 2px 10px #0000000c;cursor:pointer}
+.topbar h2{font-size:20px}
+.content{max-width:1150px;margin:auto}
+.breadcrumb{font-size:13px;color:#94a3b8;margin-bottom:20px}
+.breadcrumb a{color:#2563eb;text-decoration:none}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}
+.heading h3{font-size:22px;margin-bottom:7px}
+.heading p{font-size:13px;color:#94a3b8;line-height:1.5}
+.btn-add{background:#2563eb;color:#fff;text-decoration:none;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:700;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:22px}
+.stat{background:#fff;border-radius:14px;padding:19px;box-shadow:0 4px 20px #00000006}
+.stat-icon{width:38px;height:38px;border-radius:10px;background:#eaf1ff;color:#2563eb;display:grid;place-items:center;margin-bottom:12px}
+.stat p{font-size:12px;color:#94a3b8;margin-bottom:6px}
+.stat h3{font-size:23px}
+.panel{background:#fff;padding:22px;border-radius:16px;box-shadow:0 5px 25px #00000008}
+.toolbar{display:flex;gap:10px;margin-bottom:20px}
+.search{flex:1;position:relative}
+.search i{position:absolute;left:14px;top:15px;color:#94a3b8}
+.search input,select{width:100%;padding:13px;border:1px solid #e2e8f0;border-radius:10px;outline:none;font-size:13px;background:#fff;color:#334155}
+.search input{padding-left:40px}
+.search input:focus,select:focus{border-color:#2563eb}
+.table-wrap{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th{text-align:left;padding:14px 12px;font-size:12px;color:#94a3b8;background:#f8fafc;white-space:nowrap}
+td{padding:15px 12px;border-bottom:1px solid #f1f5f9;font-size:13px;white-space:nowrap}
+tbody tr:hover{background:#fafcff}
+.id{color:#2563eb;font-weight:700}
+.badge{display:inline-block;padding:6px 10px;background:#eff6ff;color:#2563eb;border-radius:20px;font-size:11px}
+.price{font-weight:700;color:#1d4ed8}
+.actions{display:flex;gap:7px}
+.action{width:32px;height:32px;border:0;border-radius:8px;cursor:pointer;background:#eff6ff;color:#2563eb}
+.action.delete{background:#fff1f2;color:#e11d48}
+.empty{text-align:center;padding:45px 15px;color:#94a3b8}
+.empty i{font-size:35px;margin-bottom:12px;color:#cbd5e1}
+.empty h4{color:#64748b;margin-bottom:7px}
+.footer{text-align:center;color:#94a3b8;font-size:11px;margin-top:25px}
+.modal{display:none;position:fixed;inset:0;background:#0006;z-index:30;align-items:center;justify-content:center;padding:18px}
+.modal.show{display:flex}
+.modal-box{background:#fff;width:100%;max-width:450px;border-radius:16px;padding:25px;max-height:90vh;overflow:auto;animation:up .25s}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-head h3{font-size:18px}
+.close{border:0;background:#f1f5f9;width:33px;height:33px;border-radius:9px;cursor:pointer}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:12px;font-weight:700;margin-bottom:8px}
+.form-group input,.form-group select{width:100%;padding:13px;border:1px solid #e2e8f0;border-radius:9px;outline:none;font-size:13px}
+.form-group input:focus,.form-group select:focus{border-color:#2563eb}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.modal-actions button{flex:1;padding:12px;border:0;border-radius:9px;cursor:pointer;font-weight:700}
+.save{background:#2563eb;color:#fff}
+.cancel{background:#f1f5f9;color:#64748b}
+.detail-row{padding:13px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;gap:15px;font-size:13px}
+.detail-row span{color:#94a3b8}
+.detail-row strong{text-align:right;overflow-wrap:anywhere}
+.toast{position:fixed;right:20px;top:20px;background:#fff;padding:15px 20px;border-radius:12px;box-shadow:0 5px 25px #0002;z-index:50;display:none;font-size:13px}
+.toast.show{display:block;animation:up .3s}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:900px){.sidebar{left:0}.main{margin-left:250px}}
+@media(max-width:650px){.main{padding:18px}.stats{grid-template-columns:repeat(2,1fr)}.heading{align-items:flex-start;flex-direction:column}.toolbar{flex-direction:column}.panel{padding:15px}.heading h3{font-size:20px}}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar" id="sidebar">
+    <div class="logo"><i class="fa-solid fa-square-parking"></i> zhar<span>Parking</span></div>
+    <nav class="nav">
+        <a href="home.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="input_data.html"><i class="fa-solid fa-database"></i> Input Data</a>
+        <a href="input-kendaraan.html"><i class="fa-solid fa-car"></i> Input Kendaraan</a>
+        <a href="input-tarif.html"><i class="fa-solid fa-money-bill-wave"></i> Input Tarif</a>
+        <a href="input-transaksi.html"><i class="fa-solid fa-receipt"></i> Input Transaksi</a>
+        <a href="input-area-parkir.html"><i class="fa-solid fa-square-parking"></i> Area Parkir</a>
+        <a href="lihat-data.html" class="active"><i class="fa-solid fa-table-list"></i> Lihat Data</a>
+        <a href="#" onclick="contactDeveloper(event)"><i class="fa-solid fa-headset"></i> Kontak Developer</a>
+        <a href="#" onclick="logout(event)"><i class="fa-solid fa-right-from-bracket"></i> Keluar</a>
+    </nav>
+</aside>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<main class="main">
+    <header class="topbar">
+        <button class="menu" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+        <h2>Data Tarif</h2>
+    </header>
+
+    <section class="content">
+        <div class="breadcrumb">
+            <a href="home.html">Dashboard</a> /
+            <a href="lihat-data.html">Lihat Data</a> / Tarif
+        </div>
+
+        <div class="heading">
+            <div>
+                <h3>Daftar Tarif Parkir</h3>
+                <p>Data diambil langsung dari halaman Input Tarif.</p>
+            </div>
+            <a href="input-tarif.html" class="btn-add">
+                <i class="fa-solid fa-plus"></i> Tambah Tarif
+            </a>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                <p>Total Tarif</p>
+                <h3 id="totalTarif">0</h3>
+            </div>
+            <div class="stat">
+                <div class="stat-icon"><i class="fa-solid fa-motorcycle"></i></div>
+                <p>Tarif Motor</p>
+                <h3 id="tarifMotor">Rp0</h3>
+            </div>
+            <div class="stat">
+                <div class="stat-icon"><i class="fa-solid fa-car-side"></i></div>
+                <p>Tarif Mobil</p>
+                <h3 id="tarifMobil">Rp0</h3>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="toolbar">
+                <div class="search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="search" id="search" placeholder="Cari ID atau jenis kendaraan...">
+                </div>
+
+                <select id="filterJenis" style="max-width:200px">
+                    <option value="">Semua Jenis</option>
+                    <option value="Motor">Motor</option>
+                    <option value="Mobil">Mobil</option>
+                    <option value="Truk">Truk</option>
+                    <option value="Bus">Bus</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Tarif</th>
+                            <th>Jenis Kendaraan</th>
+                            <th>Tarif per Jam</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="empty" id="emptyState" style="display:none">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                <h4 id="emptyTitle">Belum ada data tarif</h4>
+                <p id="emptyText">Silakan tambahkan tarif terlebih dahulu.</p>
+            </div>
+        </div>
+
+        <div class="footer">© 2026 zharParking · Sistem Manajemen Parkir</div>
+    </section>
+</main>
+
+<!-- DETAIL MODAL -->
+<div class="modal" id="detailModal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3>Detail Tarif</h3>
+            <button class="close" onclick="closeModal('detailModal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="detailContent"></div>
+        <div class="modal-actions">
+            <button class="cancel" onclick="closeModal('detailModal')">Tutup</button>
+        </div>
+    </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal" id="editModal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3>Edit Tarif</h3>
+            <button class="close" onclick="closeModal('editModal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <form id="editForm">
+            <input type="hidden" id="editId">
+
+            <div class="form-group">
+                <label>ID Tarif</label>
+                <input type="text" id="editIdView" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Jenis Kendaraan</label>
+                <select id="editJenis" required>
+                    <option value="Motor">Motor</option>
+                    <option value="Mobil">Mobil</option>
+                    <option value="Truk">Truk</option>
+                    <option value="Bus">Bus</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Tarif per Jam (Rp)</label>
+                <input type="number" id="editTarif" min="1" step="1" required>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="cancel" onclick="closeModal('editModal')">Batal</button>
+                <button type="submit" class="save">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check" style="color:#16a34a;margin-right:8px"></i>
+    <span id="toastMessage"></span>
+</div>
+
+<script>
+if(sessionStorage.getItem("zharParking_loggedIn") !== "true"){
+    window.location.replace("Login.html");
+}
+
+const STORAGE_KEY = "zharParkingData";
+
+function getData(){
+    try{
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return Array.isArray(data) ? data : [];
+    }catch(error){
+        return [];
+    }
+}
+
+function getTarif(){
+    return getData().filter(item => item.kategori === "tarif");
+}
+
+function escapeHTML(value){
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+    })[char]);
+}
+
+function rupiah(value){
+    return "Rp" + Number(value || 0).toLocaleString("id-ID");
+}
+
+function showToast(message){
+    document.getElementById("toastMessage").textContent = message;
+    const toast = document.getElementById("toast");
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"),2500);
+}
+
+function renderData(){
+    const data = getTarif();
+    const search = document.getElementById("search").value.toLowerCase().trim();
+    const filter = document.getElementById("filterJenis").value;
+
+    document.getElementById("totalTarif").textContent = data.length;
+
+    const motor = data.find(item => item.jenis === "Motor");
+    const mobil = data.find(item => item.jenis === "Mobil");
+
+    document.getElementById("tarifMotor").textContent =
+        motor ? rupiah(motor.tarifPerJam) : "Rp0";
+
+    document.getElementById("tarifMobil").textContent =
+        mobil ? rupiah(mobil.tarifPerJam) : "Rp0";
+
+    const filtered = data.filter(item => {
+        const text = [item.id,item.jenis,item.tarifPerJam].join(" ").toLowerCase();
+        return text.includes(search) && (!filter || item.jenis === filter);
+    });
+
+    const tbody = document.getElementById("tableBody");
+    const empty = document.getElementById("emptyState");
+
+    tbody.innerHTML = "";
+
+    if(filtered.length === 0){
+        empty.style.display = "block";
+        document.getElementById("emptyTitle").textContent =
+            data.length === 0 ? "Belum ada data tarif" : "Data tidak ditemukan";
+        document.getElementById("emptyText").textContent =
+            data.length === 0
+            ? "Silakan tambahkan tarif terlebih dahulu."
+            : "Coba gunakan kata kunci atau filter lainnya.";
+        return;
+    }
+
+    empty.style.display = "none";
+
+    filtered.forEach(item => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td class="id">${escapeHTML(item.id)}</td>
+            <td><span class="badge">${escapeHTML(item.jenis)}</span></td>
+            <td class="price">${escapeHTML(rupiah(item.tarifPerJam))}/jam</td>
+            <td>
+                <div class="actions">
+                    <button class="action" title="Detail" onclick="showDetail('${escapeHTML(item.id)}')">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <button class="action" title="Edit" onclick="editData('${escapeHTML(item.id)}')">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="action delete" title="Hapus" onclick="deleteData('${escapeHTML(item.id)}')">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+function showDetail(id){
+    const item = getTarif().find(item => item.id === id);
+    if(!item) return;
+
+    document.getElementById("detailContent").innerHTML = `
+        <div class="detail-row"><span>ID Tarif</span><strong>${escapeHTML(item.id)}</strong></div>
+        <div class="detail-row"><span>Jenis Kendaraan</span><strong>${escapeHTML(item.jenis)}</strong></div>
+        <div class="detail-row"><span>Tarif per Jam</span><strong>${escapeHTML(rupiah(item.tarifPerJam))}</strong></div>
+        <div class="detail-row"><span>Tanggal Input</span><strong>${item.createdAt ? escapeHTML(new Date(item.createdAt).toLocaleString("id-ID")) : "-"}</strong></div>
+    `;
+
+    openModal("detailModal");
+}
+
+function editData(id){
+    const item = getTarif().find(item => item.id === id);
+    if(!item) return;
+
+    document.getElementById("editId").value = item.id;
+    document.getElementById("editIdView").value = item.id;
+    document.getElementById("editJenis").value = item.jenis;
+    document.getElementById("editTarif").value = item.tarifPerJam;
+
+    openModal("editModal");
+}
+
+document.getElementById("editForm").addEventListener("submit",function(e){
+    e.preventDefault();
+
+    const id = document.getElementById("editId").value;
+    const jenis = document.getElementById("editJenis").value;
+    const tarif = Number(document.getElementById("editTarif").value);
+
+    if(!Number.isSafeInteger(tarif) || tarif < 1){
+        showToast("Masukkan tarif yang valid.");
+        return;
+    }
+
+    const data = getData();
+    const index = data.findIndex(item =>
+        item.kategori === "tarif" && item.id === id
+    );
+
+    if(index === -1){
+        showToast("Data tarif tidak ditemukan.");
+        return;
+    }
+
+    const duplicate = data.some(item =>
+        item.kategori === "tarif" &&
+        item.id !== id &&
+        item.jenis === jenis
+    );
+
+    if(duplicate){
+        showToast("Jenis kendaraan sudah memiliki tarif.");
+        return;
+    }
+
+    data[index] = {
+        ...data[index],
+        jenis,
+        tarifPerJam: tarif,
+        updatedAt: new Date().toISOString()
+    };
+
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+
+    closeModal("editModal");
+    renderData();
+    showToast("Tarif berhasil diperbarui.");
+});
+
+function deleteData(id){
+    const item = getTarif().find(item => item.id === id);
+    if(!item) return;
+
+    if(!confirm("Hapus tarif " + item.jenis + "?")) return;
+
+    const data = getData().filter(item =>
+        !(item.kategori === "tarif" && item.id === id)
+    );
+
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+    renderData();
+    showToast("Data tarif berhasil dihapus.");
+}
+
+function openModal(id){
+    document.getElementById(id).classList.add("show");
+}
+
+function closeModal(id){
+    document.getElementById(id).classList.remove("show");
+}
+
+document.querySelectorAll(".modal").forEach(modal => {
+    modal.addEventListener("click",function(e){
+        if(e.target === this) this.classList.remove("show");
+    });
+});
+
+document.getElementById("search").addEventListener("input",renderData);
+document.getElementById("filterJenis").addEventListener("change",renderData);
+
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("active");
+    document.getElementById("overlay").classList.toggle("active");
+}
+
+function contactDeveloper(e){
+    e.preventDefault();
+    const nomor = "6285811570814";
+
+    if(!nomor){
+        showToast("Nomor WhatsApp developer belum diatur.");
+        return;
+    }
+
+    window.open("https://wa.me/"+nomor,"_blank");
+}
+
+function logout(e){
+    e.preventDefault();
+
+    if(confirm("Yakin ingin keluar dari zharParking?")){
+        sessionStorage.removeItem("zharParking_loggedIn");
+        window.location.href = "Login.html";
+    }
+}
+
+window.addEventListener("pageshow",renderData);
+renderData();
+</script>
+
+</body>
+</html>

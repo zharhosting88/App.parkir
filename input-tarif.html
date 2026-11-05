@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<meta name="description" content="Halaman input tarif kendaraan zharParking.">
+<title>Input Tarif - zharParking</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='white' font-family='Arial'%3EP%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f4f7fc;color:#1e293b}
+.sidebar{position:fixed;left:-260px;top:0;width:250px;height:100vh;background:#fff;padding:25px 18px;box-shadow:3px 0 20px #00000010;z-index:10;transition:.3s}
+.sidebar.active{left:0}
+.logo{font-size:22px;font-weight:800;color:#2563eb;margin-bottom:35px}
+.logo span{color:#1e293b}
+.nav a{display:flex;align-items:center;gap:13px;padding:14px;margin-bottom:8px;border-radius:10px;text-decoration:none;color:#64748b;font-size:14px}
+.nav a:hover,.nav a.active{background:#eaf1ff;color:#2563eb}
+.nav i{width:20px;text-align:center}
+.overlay{display:none;position:fixed;inset:0;background:#0006;z-index:9}
+.overlay.active{display:block}
+.main{min-height:100vh;padding:25px;transition:.3s}
+.topbar{display:flex;align-items:center;gap:15px;margin-bottom:30px}
+.menu{border:0;background:#fff;width:42px;height:42px;border-radius:10px;color:#2563eb;font-size:18px;box-shadow:0 2px 10px #0000000c;cursor:pointer}
+.topbar h2{font-size:20px}
+.content{max-width:750px;margin:auto}
+.breadcrumb{font-size:13px;color:#94a3b8;margin-bottom:20px}
+.breadcrumb a{color:#2563eb;text-decoration:none}
+.card{background:#fff;border-radius:17px;padding:28px;box-shadow:0 5px 25px #00000008;animation:up .4s ease}
+.card-head{margin-bottom:25px}
+.card-head .icon{width:48px;height:48px;background:#eaf1ff;color:#2563eb;border-radius:13px;display:grid;place-items:center;font-size:21px;margin-bottom:15px}
+.card-head h3{font-size:21px;margin-bottom:7px}
+.card-head p{font-size:13px;color:#94a3b8;line-height:1.6}
+.form-group{margin-bottom:20px}
+label{display:block;font-size:13px;font-weight:700;margin-bottom:9px}
+input,select{width:100%;padding:14px;border:1px solid #e2e8f0;border-radius:10px;outline:none;font-size:14px;background:#fff;color:#334155}
+input:focus,select:focus{border-color:#2563eb;box-shadow:0 0 0 3px #2563eb15}
+input[readonly]{background:#f8fafc;color:#64748b}
+.hint{font-size:11px;color:#94a3b8;margin-top:7px}
+.actions{display:flex;gap:10px;margin-top:25px}
+.btn{border:0;border-radius:10px;padding:14px 20px;font-weight:700;cursor:pointer;font-size:13px;transition:.2s}
+.btn-primary{background:#2563eb;color:#fff;flex:1}
+.btn-primary:hover{background:#1d4ed8}
+.btn-reset{background:#f1f5f9;color:#64748b}
+.btn:hover{transform:translateY(-1px)}
+.toast{position:fixed;right:20px;top:20px;background:#fff;padding:15px 20px;border-radius:12px;box-shadow:0 5px 25px #0002;z-index:30;display:none;font-size:13px}
+.toast.show{display:block;animation:up .3s}
+.toast i{color:#16a34a;margin-right:8px}
+.footer{text-align:center;color:#94a3b8;font-size:11px;margin-top:25px}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:900px){.sidebar{left:0}.main{margin-left:250px}.overlay{display:none!important}}
+@media(max-width:500px){.main{padding:18px}.card{padding:21px}.actions{flex-direction:column}.btn{width:100%}}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar" id="sidebar">
+    <div class="logo"><i class="fa-solid fa-square-parking"></i> zhar<span>Parking</span></div>
+    <nav class="nav">
+        <a href="Home.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="Input_data.html"><i class="fa-solid fa-database"></i> Input Data</a>
+        <a href="input-kendaraan.html"><i class="fa-solid fa-car"></i> Input Kendaraan</a>
+        <a href="input-tarif.html" class="active"><i class="fa-solid fa-money-bill-wave"></i> Input Tarif</a>
+        <a href="input-transaksi.html"><i class="fa-solid fa-receipt"></i> Input Transaksi</a>
+        <a href="input-area-parkir.html"><i class="fa-solid fa-square-parking"></i> Area Parkir</a>
+        <a href="lihat-data.html"><i class="fa-solid fa-table-list"></i> Lihat Data</a>
+        <a href="#" onclick="contactDeveloper(event)"><i class="fa-solid fa-headset"></i> Kontak Developer</a>
+        <a href="#" onclick="logout(event)"><i class="fa-solid fa-right-from-bracket"></i> Keluar</a>
+    </nav>
+</aside>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<main class="main">
+    <header class="topbar">
+        <button class="menu" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+        <h2>Input Tarif Kendaraan</h2>
+    </header>
+
+    <section class="content">
+        <div class="breadcrumb">
+            <a href="home.html">Dashboard</a> / 
+            <a href="input_data.html">Input Data</a> / Input Tarif
+        </div>
+
+        <div class="card">
+            <div class="card-head">
+                <div class="icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                <h3>Tambah Tarif</h3>
+                <p>Masukkan informasi tarif parkir kendaraan ke dalam sistem.</p>
+            </div>
+
+            <form id="tarifForm">
+                <div class="form-group">
+                    <label>ID Tarif</label>
+                    <input type="text" id="idTarif" readonly>
+                    <div class="hint">ID tarif dibuat otomatis oleh sistem.</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Jenis Kendaraan</label>
+                    <select id="jenis" required>
+                        <option value="">-- Pilih Jenis Kendaraan --</option>
+                        <option value="Motor">Motor</option>
+                        <option value="Mobil">Mobil</option>
+                        <option value="Truk">Truk</option>
+                        <option value="Bus">Bus</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tarif per Jam (Rp)</label>
+                    <input type="number" id="tarif" min="1" placeholder="Contoh: 3000" required>
+                    <div class="hint">Masukkan nominal tarif dalam Rupiah.</div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Tarif
+                    </button>
+                    <button type="reset" class="btn btn-reset">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="footer">© 2026 zharParking · Sistem Manajemen Parkir</div>
+    </section>
+</main>
+
+<div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastMessage">Data berhasil disimpan.</span>
+</div>
+
+<script>
+if(sessionStorage.getItem("zharParking_loggedIn") !== "true"){
+    window.location.replace("Login.html");
+}
+
+const STORAGE_KEY = "zharParkingData";
+
+function getData(){
+    try{
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return Array.isArray(data) ? data : [];
+    }catch(error){
+        return [];
+    }
+}
+
+function generateID(){
+    const data = getData();
+    const numbers = data
+        .filter(item => item.kategori === "tarif")
+        .map(item => parseInt(String(item.id).replace("TRF-",""),10))
+        .filter(number => Number.isFinite(number));
+
+    const next = Math.max(0,...numbers) + 1;
+    return "TRF-" + String(next).padStart(4,"0");
+}
+
+function setID(){
+    document.getElementById("idTarif").value = generateID();
+}
+
+function showToast(message){
+    const toast = document.getElementById("toast");
+    document.getElementById("toastMessage").textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"),2500);
+}
+
+document.getElementById("tarifForm").addEventListener("submit",function(e){
+    e.preventDefault();
+
+    const data = getData();
+    const jenis = document.getElementById("jenis").value;
+    const tarif = Number(document.getElementById("tarif").value);
+
+    if(!jenis || !Number.isSafeInteger(tarif) || tarif < 1){
+        showToast("Periksa kembali data tarif.");
+        return;
+    }
+
+    const duplicate = data.some(item =>
+        item.kategori === "tarif" && item.jenis === jenis
+    );
+
+    if(duplicate){
+        showToast("Tarif untuk jenis kendaraan ini sudah ada.");
+        return;
+    }
+
+    data.push({
+        id: generateID(),
+        kategori: "tarif",
+        jenis: jenis,
+        tarifPerJam: tarif,
+        createdAt: new Date().toISOString()
+    });
+
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+
+    this.reset();
+    setID();
+    showToast("Tarif berhasil disimpan!");
+});
+
+document.getElementById("tarifForm").addEventListener("reset",function(){
+    setTimeout(setID,0);
+});
+
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("active");
+    document.getElementById("overlay").classList.toggle("active");
+}
+
+function contactDeveloper(e){
+    e.preventDefault();
+    const nomor = "6285811570814";
+    if(!nomor){
+        showToast("Nomor WhatsApp developer belum diatur.");
+        return;
+    }
+    window.open("https://wa.me/"+nomor,"_blank");
+}
+
+function logout(e){
+    e.preventDefault();
+    if(confirm("Yakin ingin keluar dari zharParking?")){
+        sessionStorage.removeItem("zharParking_loggedIn");
+        window.location.href = "Login.html";
+    }
+}
+
+setID();
+</script>
+</body>
+</html>

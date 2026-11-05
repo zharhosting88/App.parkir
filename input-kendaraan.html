@@ -1,0 +1,1483 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<meta name="description" content="Input data kendaraan zharParking untuk mengelola identitas kendaraan dan pemiliknya.">
+<meta name="keywords" content="zharParking, input kendaraan, data kendaraan, ZharWeb">
+<meta name="author" content="ZharWeb">
+<meta property="og:title" content="Input Kendaraan - zharParking">
+<meta property="og:description" content="Pendataan kendaraan zharParking">
+<meta property="og:type" content="website">
+
+<title>Input Kendaraan - zharParking</title>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='69' font-size='62' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EP%3C/text%3E%3C/svg%3E">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary:#2563eb;
+    --dark:#1d4ed8;
+    --bg:#f4f7fc;
+    --white:#fff;
+    --text:#172554;
+    --muted:#64748b;
+    --border:#e8edf5;
+    --sidebar:255px;
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body {
+    font-family:Inter,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+a {
+    text-decoration:none;
+    color:inherit;
+}
+
+button,input,select {
+    font-family:inherit;
+}
+
+button {
+    cursor:pointer;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    position:fixed;
+    inset:0 auto 0 0;
+    width:var(--sidebar);
+    background:white;
+    border-right:1px solid var(--border);
+    padding:25px 18px;
+    z-index:100;
+    display:flex;
+    flex-direction:column;
+    transition:.3s;
+    overflow-y:auto;
+}
+
+.brand {
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:5px 10px 30px;
+}
+
+.brand-icon {
+    width:42px;
+    height:42px;
+    background:var(--primary);
+    color:white;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:21px;
+}
+
+.brand h2 {
+    font-size:20px;
+    font-weight:800;
+}
+
+.brand h2 span {
+    color:var(--primary);
+    font-weight:500;
+}
+
+.menu-label {
+    font-size:10px;
+    color:#94a3b8;
+    font-weight:700;
+    letter-spacing:1.2px;
+    padding:12px;
+}
+
+.nav-menu {
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.nav-link {
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px;
+    border-radius:10px;
+    font-size:12px;
+    font-weight:600;
+    color:var(--muted);
+    transition:.2s;
+}
+
+.nav-link i {
+    width:20px;
+    text-align:center;
+    font-size:16px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background:#eff6ff;
+    color:var(--primary);
+}
+
+.sidebar-bottom {
+    margin-top:auto;
+}
+
+.sidebar-profile {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:15px 10px;
+    border-top:1px solid var(--border);
+    margin-top:15px;
+}
+
+.avatar {
+    width:39px;
+    height:39px;
+    background:#dbeafe;
+    color:var(--primary);
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.profile-info {
+    flex:1;
+}
+
+.profile-info strong {
+    display:block;
+    font-size:11px;
+}
+
+.profile-info span {
+    color:var(--muted);
+    font-size:10px;
+}
+
+/* MAIN */
+
+.main {
+    margin-left:var(--sidebar);
+    min-height:100vh;
+}
+
+.topbar {
+    height:76px;
+    background:white;
+    border-bottom:1px solid var(--border);
+    padding:0 35px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:50;
+}
+
+.top-left {
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.topbar h3 {
+    font-size:15px;
+}
+
+.topbar p {
+    color:var(--muted);
+    font-size:10px;
+    margin-top:4px;
+}
+
+.date {
+    background:#f8fafc;
+    color:var(--muted);
+    padding:10px 13px;
+    border-radius:9px;
+    font-size:11px;
+}
+
+.menu-toggle {
+    display:none;
+    width:39px;
+    height:39px;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:16px;
+    color:var(--text);
+}
+
+/* CONTENT */
+
+.content {
+    max-width:1100px;
+    padding:32px 35px;
+    margin:auto;
+    animation:appear .5s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity:0;
+        transform:translateY(12px);
+    }
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* BREADCRUMB */
+
+.breadcrumb {
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:9px;
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:22px;
+}
+
+.breadcrumb a {
+    color:var(--primary);
+    font-weight:600;
+}
+
+.breadcrumb i {
+    font-size:9px;
+}
+
+/* PAGE HEADER */
+
+.page-header {
+    margin-bottom:25px;
+}
+
+.page-header .tag {
+    color:var(--primary);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.page-header h1 {
+    font-size:25px;
+    margin:10px 0 8px;
+}
+
+.page-header p {
+    font-size:12px;
+    line-height:1.8;
+    color:var(--muted);
+}
+
+/* FORM CARD */
+
+.form-card {
+    background:white;
+    border:1px solid var(--border);
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 5px 20px rgba(15,23,42,.025);
+}
+
+.card-heading {
+    padding:23px 25px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.card-icon {
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    background:#eff6ff;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+}
+
+.card-heading h2 {
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.card-heading p {
+    font-size:10px;
+    color:var(--muted);
+}
+
+.form-body {
+    padding:26px;
+}
+
+.form-grid {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:22px 18px;
+}
+
+.form-group {
+    min-width:0;
+}
+
+.form-group.full {
+    grid-column:1/-1;
+}
+
+.form-group label {
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.required {
+    color:#ef4444;
+}
+
+.input-box {
+    height:49px;
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    padding:0 13px;
+    transition:.2s;
+    background:white;
+}
+
+.input-box:focus-within {
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px rgba(37,99,235,.08);
+}
+
+.input-box i {
+    width:22px;
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.input-box input,
+.input-box select {
+    width:100%;
+    min-width:0;
+    height:100%;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:var(--text);
+    font-size:12px;
+}
+
+.input-box input::placeholder {
+    color:#a0aec0;
+}
+
+.input-box select {
+    cursor:pointer;
+}
+
+.input-box select:invalid {
+    color:#a0aec0;
+}
+
+.field-hint {
+    font-size:10px;
+    color:#94a3b8;
+    margin-top:8px;
+    line-height:1.6;
+}
+
+/* BUTTONS */
+
+.form-actions {
+    display:flex;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+    gap:11px;
+    margin-top:30px;
+    padding-top:23px;
+    border-top:1px solid var(--border);
+}
+
+.btn {
+    border:0;
+    padding:13px 19px;
+    border-radius:10px;
+    font-size:11px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    transition:.2s;
+}
+
+.btn-reset {
+    background:#f1f5f9;
+    color:#475569;
+}
+
+.btn-reset:hover {
+    background:#e2e8f0;
+}
+
+.btn-submit {
+    background:var(--primary);
+    color:white;
+}
+
+.btn-submit:hover {
+    background:var(--dark);
+    transform:translateY(-2px);
+    box-shadow:0 6px 15px rgba(37,99,235,.2);
+}
+
+/* INFORMATION */
+
+.info-box {
+    display:flex;
+    align-items:flex-start;
+    gap:13px;
+    background:#eff6ff;
+    border:1px solid #dbeafe;
+    padding:17px;
+    border-radius:12px;
+    margin-top:22px;
+}
+
+.info-box i {
+    color:var(--primary);
+    margin-top:2px;
+}
+
+.info-box strong {
+    font-size:11px;
+    display:block;
+    margin-bottom:5px;
+}
+
+.info-box p {
+    color:#64748b;
+    font-size:10px;
+    line-height:1.7;
+}
+
+.footer {
+    text-align:center;
+    color:#94a3b8;
+    font-size:10px;
+    padding:30px 0 5px;
+}
+
+/* TOAST */
+
+.toast {
+    position:fixed;
+    top:90px;
+    right:20px;
+    max-width:calc(100vw - 40px);
+    padding:14px 17px;
+    border-radius:11px;
+    background:#fff;
+    box-shadow:0 10px 35px rgba(15,23,42,.12);
+    border:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-size:11px;
+    font-weight:600;
+    z-index:300;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-10px);
+    transition:.3s;
+}
+
+.toast.show {
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
+}
+
+.toast.success i {
+    color:#16a34a;
+}
+
+.toast.error i {
+    color:#dc2626;
+}
+
+/* MODAL */
+
+.modal {
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.45);
+    z-index:200;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    backdrop-filter:blur(3px);
+}
+
+.modal.show {
+    display:flex;
+    animation:appear .2s ease;
+}
+
+.modal-box {
+    width:100%;
+    max-width:390px;
+    background:white;
+    border-radius:18px;
+    padding:27px;
+    text-align:center;
+}
+
+.modal-icon {
+    width:60px;
+    height:60px;
+    background:#eff6ff;
+    color:var(--primary);
+    border-radius:17px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    margin:0 auto 17px;
+}
+
+.modal-box h3 {
+    font-size:17px;
+    margin-bottom:9px;
+}
+
+.modal-box p {
+    font-size:11px;
+    color:var(--muted);
+    line-height:1.8;
+}
+
+.modal-actions {
+    display:flex;
+    gap:10px;
+    margin-top:22px;
+}
+
+.modal-actions button,
+.modal-actions a {
+    flex:1;
+    padding:13px;
+    border:0;
+    border-radius:10px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.cancel-btn {
+    background:#f1f5f9;
+    color:#475569;
+}
+
+.wa-btn {
+    background:var(--primary);
+    color:white;
+}
+
+/* OVERLAY */
+
+.overlay {
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.4);
+    z-index:90;
+    display:none;
+}
+
+.overlay.show {
+    display:block;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px) {
+    .content {
+        padding:25px;
+    }
+
+    .topbar {
+        padding:0 25px;
+    }
+}
+
+@media(max-width:760px) {
+    .sidebar {
+        transform:translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform:translateX(0);
+        box-shadow:10px 0 35px rgba(0,0,0,.08);
+    }
+
+    .main {
+        margin-left:0;
+    }
+
+    .menu-toggle {
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+
+    .topbar {
+        height:68px;
+        padding:0 17px;
+    }
+
+    .content {
+        padding:22px 17px;
+    }
+}
+
+@media(max-width:500px) {
+    .date {
+        display:none;
+    }
+
+    .page-header h1 {
+        font-size:22px;
+    }
+
+    .form-grid {
+        grid-template-columns:1fr;
+        gap:19px;
+    }
+
+    .form-group.full {
+        grid-column:auto;
+    }
+
+    .card-heading {
+        padding:19px;
+    }
+
+    .form-body {
+        padding:19px;
+    }
+
+    .form-actions {
+        flex-direction:column-reverse;
+    }
+
+    .btn {
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <div class="brand-icon">
+            <i class="fa-solid fa-square-parking"></i>
+        </div>
+        <h2>zhar<span>Parking</span></h2>
+    </div>
+
+    <div class="menu-label">MAIN MENU</div>
+
+    <nav class="nav-menu">
+
+        <a href="Home.html" class="nav-link">
+            <i class="fa-solid fa-house"></i>
+            Home
+        </a>
+
+        <a href="input-kendaraan.html" class="nav-link active">
+            <i class="fa-solid fa-car"></i>
+            Kendaraan
+        </a>
+
+        <a href="input-tarif.html" class="nav-link">
+            <i class="fa-solid fa-money-bill-wave"></i>
+            Tarif
+        </a>
+
+        <a href="input-transaksi.html" class="nav-link">
+            <i class="fa-solid fa-receipt"></i>
+            Transaksi
+        </a>
+
+        <a href="input-area-parkir.html" class="nav-link">
+            <i class="fa-solid fa-square-parking"></i>
+            Area Parkir
+        </a>
+
+        <a href="lihat-data.html" class="nav-link">
+            <i class="fa-solid fa-database"></i>
+            Lihat Data
+        </a>
+
+        <a href="#" class="nav-link" id="contactMenu">
+            <i class="fa-solid fa-headset"></i>
+            Kontak Developer
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <div class="menu-label">ACCOUNT</div>
+
+        <nav class="nav-menu">
+            <a href="Login.html" class="nav-link" id="logoutMenu">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+        </nav>
+
+        <div class="sidebar-profile">
+            <div class="avatar">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+
+            <div class="profile-info">
+                <strong>Administrator</strong>
+                <span>Admin zharParking</span>
+            </div>
+
+            <i class="fa-solid fa-circle-check"
+               style="color:#16a34a;font-size:13px"></i>
+        </div>
+
+    </div>
+
+</aside>
+
+<div class="overlay" id="overlay"></div>
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <header class="topbar">
+
+        <div class="top-left">
+
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div>
+                <h3>Input Kendaraan</h3>
+                <p>Pengelolaan data identitas kendaraan</p>
+            </div>
+
+        </div>
+
+        <div class="date">
+            <i class="fa-regular fa-calendar"></i>
+            <span id="currentDate"></span>
+        </div>
+
+    </header>
+
+    <section class="content">
+
+        <!-- BREADCRUMB -->
+
+        <div class="breadcrumb">
+            <a href="home.html">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="Input_data.html">Input Data</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Kendaraan</span>
+        </div>
+
+        <!-- HEADER -->
+
+        <div class="page-header">
+
+            <span class="tag">
+                <i class="fa-solid fa-car-side"></i>
+                VEHICLE MANAGEMENT
+            </span>
+
+            <h1>Input Data Kendaraan</h1>
+
+            <p>
+                Masukkan informasi kendaraan untuk
+                mendaftarkan kendaraan ke dalam sistem zharParking.
+            </p>
+
+        </div>
+
+        <!-- FORM -->
+
+        <div class="form-card">
+
+            <div class="card-heading">
+
+                <div class="card-icon">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </div>
+
+                <div>
+                    <h2>Formulir Kendaraan</h2>
+                    <p>Lengkapi seluruh informasi berikut.</p>
+                </div>
+
+            </div>
+
+            <div class="form-body">
+
+                <form id="vehicleForm">
+
+                    <div class="form-grid">
+
+                        <!-- ID -->
+
+                        <div class="form-group">
+
+                            <label for="vehicleId">
+                                ID Kendaraan <span class="required">*</span>
+                            </label>
+
+                            <div class="input-box">
+                                <i class="fa-solid fa-fingerprint"></i>
+
+                                <input
+                                    type="text"
+                                    id="vehicleId"
+                                    placeholder="ID otomatis"
+                                    readonly
+                                >
+                            </div>
+
+                            <div class="field-hint">
+                                ID dibuat otomatis oleh sistem.
+                            </div>
+
+                        </div>
+
+                        <!-- PLAT -->
+
+                        <div class="form-group">
+
+                            <label for="plate">
+                                Plat Nomor <span class="required">*</span>
+                            </label>
+
+                            <div class="input-box">
+                                <i class="fa-solid fa-id-card"></i>
+
+                                <input
+                                    type="text"
+                                    id="plate"
+                                    placeholder="Contoh: B 1234 XYZ"
+                                    maxlength="15"
+                                    required
+                                    autocomplete="off"
+                                >
+                            </div>
+
+                            <div class="field-hint">
+                                Gunakan nomor polisi sesuai kendaraan.
+                            </div>
+
+                        </div>
+
+                        <!-- JENIS -->
+
+                        <div class="form-group">
+
+                            <label for="type">
+                                Jenis Kendaraan <span class="required">*</span>
+                            </label>
+
+                            <div class="input-box">
+                                <i class="fa-solid fa-car"></i>
+
+                                <select id="type" required>
+                                    <option value="" disabled selected>
+                                        Pilih jenis kendaraan
+                                    </option>
+                                    <option value="Motor">Motor</option>
+                                    <option value="Mobil">Mobil</option>
+                                    <option value="Truk">Truk</option>
+                                    <option value="Bus">Bus</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <!-- WARNA -->
+
+                        <div class="form-group">
+
+                            <label for="color">
+                                Warna Kendaraan <span class="required">*</span>
+                            </label>
+
+                            <div class="input-box">
+                                <i class="fa-solid fa-palette"></i>
+
+                                <input
+                                    type="text"
+                                    id="color"
+                                    placeholder="Contoh: Hitam"
+                                    maxlength="30"
+                                    required
+                                >
+                            </div>
+
+                        </div>
+
+                        <!-- PEMILIK -->
+
+                        <div class="form-group full">
+
+                            <label for="owner">
+                                Nama Pemilik <span class="required">*</span>
+                            </label>
+
+                            <div class="input-box">
+                                <i class="fa-solid fa-user"></i>
+
+                                <input
+                                    type="text"
+                                    id="owner"
+                                    placeholder="Masukkan nama pemilik kendaraan"
+                                    maxlength="80"
+                                    required
+                                >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- BUTTONS -->
+
+                    <div class="form-actions">
+
+                        <button type="reset" class="btn btn-reset">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            Reset Form
+                        </button>
+
+                        <button type="submit" class="btn btn-submit">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Simpan Kendaraan
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- INFORMATION -->
+
+        <div class="info-box">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            <div>
+                <strong>Informasi Penyimpanan</strong>
+
+                <p>
+                    Data kendaraan yang berhasil disimpan akan
+                    masuk ke localStorage browser dengan key
+                    zharParkingData dan nantinya dapat dilihat
+                    melalui halaman Lihat Data.
+                </p>
+            </div>
+
+        </div>
+
+        <footer class="footer">
+            &copy; 2027 zharParking · Developed by ZharWeb
+        </footer>
+
+    </section>
+
+</main>
+
+<!-- TOAST -->
+
+<div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastText"></span>
+</div>
+
+<!-- CONTACT MODAL -->
+
+<div class="modal" id="contactModal">
+
+    <div class="modal-box">
+
+        <div class="modal-icon">
+            <i class="fa-solid fa-headset"></i>
+        </div>
+
+        <h3>Kontak Developer</h3>
+
+        <p>
+            Hubungi developer untuk bantuan dan informasi
+            mengenai aplikasi zharParking.
+        </p>
+
+        <div style="background:#f8fafc;padding:15px;border-radius:12px;margin-top:18px;text-align:left;font-size:11px;line-height:2">
+            <strong>Nama:</strong> ZharWeb<br>
+            <strong>WhatsApp:</strong> <span id="developerNumber">Belum diatur</span><br>
+            <strong>Deskripsi:</strong> Developer website dan aplikasi digital.
+        </div>
+
+        <div class="modal-actions">
+            <button class="cancel-btn" id="closeContact">Tutup</button>
+            <a href="#" class="wa-btn" id="whatsappButton">Hubungi WA</a>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- LOGOUT MODAL -->
+
+<div class="modal" id="logoutModal">
+
+    <div class="modal-box">
+
+        <div class="modal-icon">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </div>
+
+        <h3>Keluar dari Aplikasi?</h3>
+
+        <p>Apakah Anda yakin ingin logout dari zharParking?</p>
+
+        <div class="modal-actions">
+            <button class="cancel-btn" id="cancelLogout">Batal</button>
+            <button class="wa-btn" id="confirmLogout">Ya, Logout</button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+// ===================================
+// LOGIN PROTECTION
+// ===================================
+
+if (sessionStorage.getItem("zharParking_loggedIn") !== "true") {
+    window.location.replace("Login.html");
+}
+
+// ===================================
+// CONFIGURATION
+// ===================================
+
+const STORAGE_KEY = "zharParkingData";
+
+const DEVELOPER = {
+    name: "ZharWeb",
+    whatsapp: "6285811570814"
+};
+
+// ===================================
+// ELEMENTS
+// ===================================
+
+const form = document.getElementById("vehicleForm");
+const vehicleId = document.getElementById("vehicleId");
+const plate = document.getElementById("plate");
+const type = document.getElementById("type");
+const color = document.getElementById("color");
+const owner = document.getElementById("owner");
+
+const toast = document.getElementById("toast");
+const toastText = document.getElementById("toastText");
+
+let toastTimer;
+
+// ===================================
+// GET SAVED DATA
+// ===================================
+
+function getData() {
+
+    try {
+
+        const data = JSON.parse(
+            localStorage.getItem(STORAGE_KEY) || "[]"
+        );
+
+        return Array.isArray(data) ? data : [];
+
+    } catch(error) {
+
+        return [];
+
+    }
+
+}
+
+// ===================================
+// GENERATE ID
+// ===================================
+
+function generateId() {
+
+    const records = getData();
+
+    let number = 1;
+    let id;
+
+    do {
+
+        id = "KDR-" + String(number).padStart(4, "0");
+        number++;
+
+    } while(records.some(item => item.id === id));
+
+    return id;
+
+}
+
+function setNewId() {
+    vehicleId.value = generateId();
+}
+
+setNewId();
+
+// ===================================
+// TOAST NOTIFICATION
+// ===================================
+
+function showToast(text, status = "success") {
+
+    clearTimeout(toastTimer);
+
+    toast.className = "toast " + status;
+
+    const icon = toast.querySelector("i");
+
+    icon.className = status === "success"
+        ? "fa-solid fa-circle-check"
+        : "fa-solid fa-circle-exclamation";
+
+    toastText.textContent = text;
+
+    toast.classList.add("show");
+
+    toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+
+}
+
+// ===================================
+// UPPERCASE PLATE
+// ===================================
+
+plate.addEventListener("input", function() {
+
+    this.value = this.value.toUpperCase();
+
+});
+
+// ===================================
+// DATE
+// ===================================
+
+document.getElementById("currentDate").textContent =
+    new Date().toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+    });
+
+// ===================================
+// SAVE VEHICLE
+// ===================================
+
+form.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const id = vehicleId.value.trim();
+    const plateNumber = plate.value.trim().toUpperCase();
+    const vehicleType = type.value;
+    const vehicleColor = color.value.trim();
+    const vehicleOwner = owner.value.trim();
+
+    if (
+        !id ||
+        !plateNumber ||
+        !vehicleType ||
+        !vehicleColor ||
+        !vehicleOwner
+    ) {
+
+        showToast("Semua data wajib diisi!", "error");
+        return;
+
+    }
+
+    const records = getData();
+
+    // Cek duplikasi ID
+
+    if(records.some(item => item.id === id)) {
+
+        showToast("ID kendaraan sudah digunakan!", "error");
+        setNewId();
+        return;
+
+    }
+
+    // Cek duplikasi plat nomor
+
+    const duplicatePlate = records.some(item => {
+
+        return item.plat &&
+            item.plat.toUpperCase() === plateNumber;
+
+    });
+
+    if(duplicatePlate) {
+
+        showToast("Plat nomor sudah terdaftar!", "error");
+        return;
+
+    }
+
+    // Data kendaraan
+
+    const newVehicle = {
+
+        id: id,
+        kategori: "kendaraan",
+        plat: plateNumber,
+        jenis: vehicleType,
+        warna: vehicleColor,
+        pemilik: vehicleOwner,
+        createdAt: new Date().toISOString()
+
+    };
+
+    // Simpan ke localStorage
+
+    try {
+
+        records.push(newVehicle);
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(records)
+        );
+
+        showToast("Data kendaraan berhasil disimpan!");
+
+        form.reset();
+
+        setNewId();
+
+    } catch(error) {
+
+        showToast(
+            "Gagal menyimpan data. Periksa penyimpanan browser.",
+            "error"
+        );
+
+    }
+
+});
+
+// ===================================
+// RESET FORM
+// ===================================
+
+form.addEventListener("reset", function() {
+
+    setTimeout(() => {
+        setNewId();
+    }, 0);
+
+});
+
+// ===================================
+// HAMBURGER NAVIGATION
+// ===================================
+
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+document.getElementById("menuToggle").addEventListener("click", function() {
+
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+
+});
+
+function closeSidebar() {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+}
+
+overlay.addEventListener("click", closeSidebar);
+
+// ===================================
+// DEVELOPER CONTACT
+// ===================================
+
+const contactModal = document.getElementById("contactModal");
+
+document.getElementById("contactMenu").addEventListener("click", function(e) {
+
+    e.preventDefault();
+
+    closeSidebar();
+
+    contactModal.classList.add("show");
+
+    const number = DEVELOPER.whatsapp;
+
+    document.getElementById("developerNumber").textContent =
+        number ? "+" + number : "Belum diatur";
+
+    const wa = document.getElementById("whatsappButton");
+
+    if(/^62[0-9]{8,15}$/.test(number)) {
+
+        wa.href = "https://wa.me/" + number +
+            "?text=" + encodeURIComponent(
+                "Halo ZharWeb, saya ingin bertanya mengenai zharParking."
+            );
+
+        wa.target = "_blank";
+        wa.style.opacity = "1";
+        wa.style.pointerEvents = "auto";
+
+    } else {
+
+        wa.href = "#";
+        wa.removeAttribute("target");
+        wa.style.opacity = ".5";
+        wa.style.pointerEvents = "none";
+
+    }
+
+});
+
+document.getElementById("closeContact").addEventListener("click", function() {
+    contactModal.classList.remove("show");
+});
+
+// ===================================
+// LOGOUT
+// ===================================
+
+const logoutModal = document.getElementById("logoutModal");
+
+document.getElementById("logoutMenu").addEventListener("click", function(e) {
+
+    e.preventDefault();
+
+    closeSidebar();
+
+    logoutModal.classList.add("show");
+
+});
+
+document.getElementById("cancelLogout").addEventListener("click", function() {
+    logoutModal.classList.remove("show");
+});
+
+document.getElementById("confirmLogout").addEventListener("click", function() {
+
+    sessionStorage.removeItem("zharParking_loggedIn");
+
+    window.location.replace("Login.html");
+
+});
+
+// ===================================
+// CLOSE MODALS
+// ===================================
+
+[contactModal, logoutModal].forEach(modal => {
+
+    modal.addEventListener("click", function(e) {
+
+        if(e.target === modal) {
+            modal.classList.remove("show");
+        }
+
+    });
+
+});
+
+document.addEventListener("keydown", function(e) {
+
+    if(e.key === "Escape") {
+
+        contactModal.classList.remove("show");
+        logoutModal.classList.remove("show");
+        closeSidebar();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
